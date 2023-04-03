@@ -117,33 +117,79 @@ class Truck(Vehicle):
 
 a = Car("audi","80", "1985", "4")
 print(a.get_info())
+print(a.get_seats())
 
-b = Truck("audi","80", "1985", "4")
+b = Truck("scania","R560", "2004", "44 t")
 print(b.get_info())
+print(b.get_weight())
         
 
 #7.Create a base class named Person that has the following attributes: name, age, and address.
 # It should also have a method called get_info() that returns a string with the person's name, age, and address.
 # Then create two subclasses, Student and Teacher, that inherit from Person and add additional attributes and methods
 # specific to each role.
+import datetime
+
+class Person:
+    def __init__(self, name: str, age: int, address: str) -> None:
+        self.name = name
+        self.age = age
+        self.address = address
+    
+    def get_info(self):
+        return self.name + " is " + str(self.age) + " years old and lives in: " + self.address
+
+class Student(Person):
+    def __init__(self, name: str, age: int, address: str, graduate_year: int) -> None:
+        self.graduate_year = graduate_year
+        super().__init__(name, age, address)
+
+    def years_left_to_study(self):
+        today = datetime.date.today()
+        current_year = today.year
+        return self.graduate_year - current_year
+
+class Teacher(Person):
+    def __init__(self, name: str, age: int, address: str, module: str) -> None:
+        self.module = module
+        super().__init__(name, age, address)
+
+    def get_module(self):
+        return self.module
+
+person1 = Student("John", 30, "Vilnius", 2025)
+print(person1.years_left_to_study())
+
+person2 = Teacher("Ronald", 56, "Vilnius", "filosophy")
+print(person2.get_module())
 
 #For I/O:
 import json
 #8.Write a Python program that reads a JSON file containing a list of dictionaries, sorts the list by a specific key,
 # and writes the sorted list back to the file.
 
-def json_rewriter():
-    with open("first.json","r") as f:
+def json_rewriter(key):
+    with open("first.json", "r") as f:
         text = json.load(f)
-        for key in f:
-        sorted(f)
-           
+        new_text = sorted(text, key=lambda d: d[key])
 
-'''    with open("first.json","w") as f:
-        json.dump({"persons":self.persons},f)'''
+    with open("first.json", "w") as out_f:
+        out_f.write(str(new_text))
+
+json_rewriter("age")
+
+'''[{
+	"name": "Homer",
+	"age": "39"
+}, {
+	"name": "Bart",
+	"age": "10"
+}]'''
+      
 
 #9.Write a Python program that reads a CSV file containing student grades, calculates their average score,
 # and writes the average to a new file.
+
 
 #10.Write a Python program that reads a CSV file containing student grades and writes a new CSV file with the grades
 # sorted by student name.
