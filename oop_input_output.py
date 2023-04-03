@@ -164,9 +164,11 @@ person2 = Teacher("Ronald", 56, "Vilnius", "filosophy")
 print(person2.get_module())
 
 #For I/O:
-import json
+
 #8.Write a Python program that reads a JSON file containing a list of dictionaries, sorts the list by a specific key,
 # and writes the sorted list back to the file.
+
+import json
 
 def json_rewriter(key):
     with open("first.json", "r") as f:
@@ -190,6 +192,36 @@ json_rewriter("age")
 #9.Write a Python program that reads a CSV file containing student grades, calculates their average score,
 # and writes the average to a new file.
 
+import pandas as pd
+
+df = pd.read_csv(r'student_grades.csv')
+print(df)
+
+df['avg_score'] = df.loc[:, ["english","math"]].mean(axis = 1)
+print(df)
+
+new_entry = pd.DataFrame()
+new_entry= df.drop(["english","math"], axis=1)
+new_entry = new_entry.set_index('student')
+print(new_entry)
+
+new_entry.to_csv('students_avg.csv')
 
 #10.Write a Python program that reads a CSV file containing student grades and writes a new CSV file with the grades
 # sorted by student name.
+import csv
+
+students = list()
+with open("student_grades.csv", "r") as f:
+    all_grades = csv.reader(f, delimiter=',')
+    for name in all_grades:
+        students.append(name)
+
+new_entry = students[1:]
+new_entry.sort(key= lambda student: student[0])
+print(new_entry)
+
+with open("sorted_student_grades.csv", "w", newline="") as f:
+    writer = csv.writer(f, delimiter=',')
+    writer.writerow(students[0])
+    writer.writerows(new_entry)
